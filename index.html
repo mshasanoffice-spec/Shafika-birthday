@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Shafika!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #87CEEB; /* Light Sky Blue */
+            --secondary: #E0F7FA;
+            --accent: #ff6b6b;
+            --text: #4a4a4a;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(135, 206, 235, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--white) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Loading Screen --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out, visibility 1s;
+        }
+
+        .loader-text {
+            font-size: 1.5rem;
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        .loader-sub {
+            font-size: 1rem;
+            color: var(--white);
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        /* --- Main Content Wrapper --- */
+        #main-content {
+            display: none; /* Hidden initially */
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Typography & Header --- */
+        h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        /* --- Message Card --- */
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--secondary);
+        }
+
+        .message-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: left;
+            color: #555;
+            white-space: pre-wrap; /* Preserves formatting */
+            min-height: 200px; /* Prevent jump during typing */
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: var(--primary);
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        /* --- Floating Elements (Balloons/Hearts) --- */
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .balloon, .heart {
+            position: absolute;
+            bottom: -100px;
+            opacity: 0.8;
+            animation: floatUp linear infinite;
+        }
+
+        .balloon {
+            width: 30px;
+            height: 40px;
+            background-color: #ff9a9e;
+            border-radius: 50%;
+            background: linear-gradient(to top, rgba(255,255,255,0.4), transparent);
+        }
+        
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 10px solid rgba(255,255,255,0.6);
+        }
+
+        .heart {
+            color: var(--accent);
+            font-size: 20px;
+        }
+
+        /* --- Music Control --- */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.3s;
+            border: 2px solid var(--primary);
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        .music-control.playing {
+            animation: glow 2s infinite;
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 20px;
+            padding: 20px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: bold;
+            color: #777;
+        }
+
+        /* --- Confetti Canvas --- */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* --- Animations --- */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px var(--primary); }
+            50% { box-shadow: 0 0 20px var(--primary), 0 0 10px var(--white); }
+            100% { box-shadow: 0 0 5px var(--primary); }
+        }
+
+        /* Mobile Tweaks */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .card { padding: 20px; margin: 0 10px 30px 10px; }
+            .message-text { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio Element -->
+    <!-- Using a copyright-free instrumental birthday tune -->
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=happy-birthday-song-12285.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="loader-text">Wait... Someone Special Has a Message For You 💙</div>
+        <div class="loader-sub">Loading Surprise...</div>
+    </div>
+
+    <!-- Background Effects (Balloons/Hearts) -->
+    <div class="background-effects" id="effects-container"></div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <h1>Happy Birthday Shafika 🎉</h1>
+        <h2>To an amazing friend & colleague</h2>
+
+        <div class="card">
+            <p class="message-text" id="typewriter"></p>
+        </div>
+
+        <footer>
+            With best wishes,<br>
+            Shahed 💙
+        </footer>
+    </div>
+
+    <!-- Music Button -->
+    <div class="music-control" id="music-btn" title="Play/Pause Music">
+        🎵
+    </div>
+
+    <script>
+        // --- Configuration ---
+        const loader = document.getElementById('loader');
+        const mainContent = document.getElementById('main-content');
+        const musicBtn = document.getElementById('music-btn');
+        const audio = document.getElementById('bg-music');
+        const typeWriterElement = document.getElementById('typewriter');
+        
+        // The
